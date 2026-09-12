@@ -1,0 +1,46 @@
+/* Cart drawer slides from the left in RTL instead of the right */
+[dir="rtl"] .cart-drawer-overlay {
+  justify-content: flex-start;
+}
+
+[dir="rtl"] .cart-drawer {
+  box-shadow: 12px 0 35px rgba(0, 0, 0, 0.15);
+}
+
+[dir="rtl"] .cart-drawer {
+  animation: cart-drawer-slide-in-rtl 0.25s ease;
+}
+
+@keyframes cart-drawer-slide-in-rtl {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Floating cart stays centered — no change needed, transform: translateX(-50%) is symmetric */
+
+/* Restaurant header content, address icon, etc. — flex row-reverse where icon+text order matters */
+[dir="rtl"] .restaurant-address,
+[dir="rtl"] .order-card-header,
+[dir="rtl"] .cart-line-info,
+[dir="rtl"] .menu-items-row {
+  flex-direction: row-reverse;
+}
+
+/* Dashboard sidebar sits on the right in RTL */
+[dir="rtl"] .dashboard-nav {
+  border-right: none;
+  border-left: 1px solid var(--border, #e8dfd1);
+}
+
+[dir="rtl"] .dashboard-shell {
+  direction: rtl;
+}
+
+/* Bottom nav / order-total / stats bars: numbers and $ signs stay LTR even in Arabic UI */
+[dir="rtl"] .order-total,
+[dir="rtl"] .menu-item-price,
+[dir="rtl"] .cart-drawer-total,
+[dir="rtl"] .stats-total-card strong {
+  direction: ltr;
+  text-align: right;
+}

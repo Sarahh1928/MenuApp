@@ -1,0 +1,166 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "menu": "Menu",
+    "orders": "Orders",
+    "stats": "Stats",
+    "profile": "Profile",
+    "signOut": "Sign out"
+  },
+  "menu": {
+    "searchPlaceholder": "Search menu...",
+    "all": "All",
+    "noItems": "No menu items found.",
+    "unavailable": "Currently unavailable",
+    "addToCart": "Add to cart",
+    "ourMenu": "Our Menu",
+    "loading": "Loading menu...",
+    "error": "Couldn't load menu: {{error}}"
+  },
+  "menuItems": {
+    "empty": "No items yet — add your first one above.",
+    "deleteConfirm": "Delete this item?",
+    "available": "Available",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "total": "Total",
+    "checkout": "Proceed to checkout",
+    "viewCart": "View Cart",
+    "itemSummary": "{{count}} item{{plural}} · {{total}} {{currency}}",
+    "currency": "EGP"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "name": "Name",
+    "phone": "Phone",
+    "address": "Address",
+    "delivery": "Delivery",
+    "pickup": "Pickup",
+    "back": "Back",
+    "sendOrder": "Send order · {{total}} EGP",
+    "placing": "Placing order...",
+    "error": "Couldn't place order — please try again."
+  },
+  "restaurant": {
+    "loading": "Loading...",
+    "notFound": "Restaurant not found.",
+    "openNow": "Open now",
+    "closed": "Closed",
+    "closesAt": "Closes at",
+    "opensAt": "Opens at",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "location": "Location"
+  },
+  "login": {
+    "title": "Restaurant login",
+    "subtitle": "Sign in to manage your menu and orders.",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "error": "Incorrect email or password."
+  },
+  "dashboard": {
+    "menu": {
+      "title": "Menu",
+      "subtitle": "Manage categories and items shown on your public menu.",
+      "addItem": "+ Add item",
+      "loading": "Loading menu...",
+      "error": "Couldn't load menu:"
+    },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Orders auto-clear after 2 days. New ones appear here automatically.",
+      "refresh": "Refresh",
+      "loading": "Loading orders...",
+      "error": "Couldn't load orders:",
+      "empty": "No orders in the last 2 days.",
+      "pickup": "Pickup",
+      "delivery": "Delivery",
+      "justNow": "just now",
+      "minutesAgo": "{{count}}m ago",
+      "hoursAgo": "{{count}}h ago",
+      "daysAgo": "{{count}}d ago",
+      "total": "Total",
+      "messageCustomer": "Message customer"
+    },
+    "stats": {
+      "title": "Stats",
+      "subtitle": "How many people are viewing your menu.",
+      "totalViews": "Total menu views (all time)",
+      "noViews": "No views recorded yet.",
+      "loading": "Loading stats...",
+      "error": "Couldn't load stats:{{error}}",
+      "views": "{{count}} views"
+    },
+
+    "menuItems": {
+      "new": "New item",
+      "edit": "Edit item",
+      "name": "Name",
+      "nameAr": "Name (Arabic)",
+      "nameEn": "Name (English)",
+      "descriptionAr": "Description (Arabic)",
+      "descriptionEn": "Description (English)",
+      "optional": "optional",
+      "description": "Description",
+      "price": "Price (EGP)",
+      "category": "Category",
+      "photo": "Photo",
+      "preview": "Preview",
+      "available": "Available",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "error": "Something went wrong"
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Your restaurant's public info and opening hours.",
+      "name": "Restaurant name",
+      "description": "Description",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp number",
+      "address": "Address",
+      "logo": "Logo",
+      "cover": "Cover photo",
+      "hours": "Opening hours",
+      "loading": "Loading profile...",
+      "save": "Save changes",
+      "saving": "Saving...",
+      "saved": "Saved.",
+      "error": "Something went wrong."
+    },
+    "hours": {
+      "days": {
+        "sunday": "Sunday",
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday"
+      },
+      "to": "to",
+      "saved": "Saved.",
+      "saving": "Saving...",
+      "save": "Save hours",
+      "loading": "Loading hours..."
+    },
+    "manager": {
+      "title": "Categories",
+      "placeholderAr": "Category name (Arabic)",
+      "placeholderEn": "Category name (English) — optional",
+      "placeholder": "New category name",
+      "add": "Add",
+      "empty": " Add a category first, then add items to it.",
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  }
+}

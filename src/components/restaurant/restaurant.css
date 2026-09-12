@@ -1,0 +1,311 @@
+/* ========================================
+   Restaurant Header
+======================================== */
+
+.restaurant-header {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  overflow: hidden;
+
+  background: #171717;
+}
+
+.restaurant-header-cover {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.restaurant-header-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.9),
+      rgba(0, 0, 0, 0.15)
+    );
+}
+
+.restaurant-header-content {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 32px;
+
+  max-width: 1000px;
+
+  margin: 0 auto;
+  padding: 0 28px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  box-sizing: border-box;
+}
+
+.restaurant-header-logo {
+  width: 76px;
+  height: 76px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  background: #f3b323;
+
+  color: #171717;
+
+  font-size: 28px;
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.restaurant-header-logo img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.restaurant-header-text h1 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.restaurant-header-text p {
+  margin: 8px 0 0;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  font-size: 15px;
+}
+
+
+/* ========================================
+   Restaurant Information
+======================================== */
+
+.restaurant-info {
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  padding: 20px 28px;
+
+  box-sizing: border-box;
+
+  background: white;
+
+  border-bottom: 1px solid #ececec;
+}
+
+.restaurant-status-section {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.restaurant-status {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.restaurant-status-dot {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+}
+
+.restaurant-status.open {
+  color: #16803c;
+}
+
+.restaurant-status.open .restaurant-status-dot {
+  background: #22c55e;
+}
+
+.restaurant-status.closed {
+  color: #dc2626;
+}
+
+.restaurant-status.closed .restaurant-status-dot {
+  background: #ef4444;
+}
+
+.restaurant-hours-text {
+  color: #777;
+
+  font-size: 13px;
+}
+
+
+/* ========================================
+   Contact Buttons
+======================================== */
+
+.restaurant-contact-actions {
+  display: flex;
+
+  gap: 10px;
+}
+
+.restaurant-info-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 10px 16px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+
+  background: white;
+
+  color: #333;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: all 0.2s ease;
+}
+
+.restaurant-info-button:hover {
+  background: #fff7e3;
+
+  border-color: #e5b94a;
+
+  transform: translateY(-1px);
+}
+
+.restaurant-info-button.whatsapp:hover {
+  border-color: #25d366;
+}
+
+
+/* ========================================
+   Address
+======================================== */
+
+.restaurant-address {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  border-top: 1px solid #f0f0f0;
+}
+
+.address-icon {
+  font-size: 18px;
+}
+
+.address-label {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #999;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+}
+
+.restaurant-address p {
+  margin: 0;
+
+  color: #444;
+
+  font-size: 14px;
+}
+
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 600px) {
+
+  .restaurant-header {
+    height: 300px;
+  }
+
+  .restaurant-header-content {
+    bottom: 24px;
+
+    padding: 0 18px;
+
+    gap: 12px;
+  }
+
+  .restaurant-header-logo {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 14px;
+
+    font-size: 22px;
+  }
+
+  .restaurant-header-text h1 {
+    font-size: 28px;
+  }
+
+  .restaurant-header-text p {
+    font-size: 13px;
+  }
+
+  .restaurant-info {
+    padding: 18px;
+  }
+
+  .restaurant-contact-actions {
+    width: 100%;
+  }
+
+  .restaurant-info-button {
+    flex: 1;
+
+    padding: 10px 8px;
+  }
+
+  .restaurant-info-button span:last-child {
+    font-size: 12px;
+  }
+}

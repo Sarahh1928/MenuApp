@@ -1,0 +1,141 @@
+.category-manager {
+  margin-bottom: 28px;
+  padding: 20px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.category-manager h3 {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.category-manager-list {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.category-manager-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 14px;
+
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.category-manager-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.category-manager-actions button {
+  width: 26px;
+  height: 26px;
+
+  border: 1px solid var(--border);
+  border-radius: 6px;
+
+  background: white;
+
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.category-manager-actions button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.category-manager-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.category-manager-add {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.category-name-en {
+  color: var(--ink-faint);
+  font-size: 12px;
+  font-weight: 500;
+}
+.category-manager-add input {
+  flex: 1;
+  padding: 10px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.category-manager-add input:focus {
+  border-color: var(--accent);
+}
+
+.category-manager-add button {
+  padding: 10px 18px;
+
+  border: none;
+  border-radius: var(--radius-sm);
+
+  min-width: 140px;
+  background: var(--ink);
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.category-manager-add button:disabled {
+  background: #ddd6cc;
+  cursor: not-allowed;
+}
+.category-manager-edit-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.category-manager-edit-row input {
+  flex: 1;
+  min-width: 120px;
+  padding: 8px 10px;
+  border: 1px solid var(--border, #e5dbcc);
+  border-radius: var(--radius-sm, 8px);
+  font-size: 13px;
+}
+
+.category-manager-edit-row .category-manager-actions button {
+  width: auto;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}

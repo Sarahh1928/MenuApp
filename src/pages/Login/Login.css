@@ -1,0 +1,89 @@
+html, body, #root {
+  height: 100%;
+}
+
+.login-page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #f7f1e7;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 32px 28px;
+  background: white;
+  border: 1px solid #e8dfd1;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(65, 48, 28, 0.08);
+}
+
+.login-card h1 {
+  margin: 0 0 6px;
+  font-size: 24px;
+}
+
+.login-card > p {
+  margin: 0 0 24px;
+  color: #81776a;
+  font-size: 14px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.login-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+}
+
+.login-form input {
+  padding: 10px 12px;
+  border: 1px solid #e5dbcc;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.login-error {
+  margin: 0;
+  color: #c93425;
+  font-size: 13px;
+}
+
+.login-submit-btn {
+  padding: 11px;
+  border: none;
+  border-radius: 10px;
+  background: #c93425;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-submit-btn:disabled {
+  background: #ddd6cc;
+  cursor: not-allowed;
+}
+
+.auth-loading,
+.auth-error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  gap: 8px;
+  color: #777;
+  text-align: center;
+}
