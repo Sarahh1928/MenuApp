@@ -1,4 +1,4 @@
-// import "../../components/restaurant/resturant.css";
+import { useTranslation } from "react-i18next";
 interface RestaurantInfoProps {
   isOpen: boolean;
   closingTime?: string;
@@ -8,7 +8,6 @@ interface RestaurantInfoProps {
   address: string;
   locationUrl?: string;
 }
-
 function RestaurantInfo({
   isOpen,
   closingTime,
@@ -18,45 +17,44 @@ function RestaurantInfo({
   address,
   locationUrl,
 }: RestaurantInfoProps) {
+  const { t } = useTranslation();
   return (
     <section className="restaurant-info">
+      {" "}
       <div className="restaurant-status-section">
+        {" "}
         <div className={`restaurant-status ${isOpen ? "open" : "closed"}`}>
-          <span className="restaurant-status-dot" />
-
+          {" "}
+          <span className="restaurant-status-dot" />{" "}
           <span>
-            {isOpen ? "Open now" : "Closed"}
-          </span>
-        </div>
-
+            {" "}
+            {isOpen ? t("restaurant.openNow") : t("restaurant.closed")}{" "}
+          </span>{" "}
+        </div>{" "}
         <span className="restaurant-hours-text">
+          {" "}
           {isOpen && closingTime
-            ? `Closes at ${closingTime}`
+            ? `${t("restaurant.closesAt")} ${closingTime}`
             : !isOpen && openingTime
-              ? `Opens at ${openingTime}`
-              : ""}
-        </span>
-      </div>
-
+              ? `${t("restaurant.opensAt")} ${openingTime}`
+              : ""}{" "}
+        </span>{" "}
+      </div>{" "}
       <div className="restaurant-contact-actions">
-        <a
-          href={`tel:${phone}`}
-          className="restaurant-info-button"
-        >
-          <span>📞</span>
-          <span>Call</span>
-        </a>
-
+        {" "}
+        <a href={`tel:${phone}`} className="restaurant-info-button">
+          {" "}
+          <span>📞</span> <span>{t("restaurant.call")}</span>{" "}
+        </a>{" "}
         <a
           href={`https://wa.me/${whatsapp}`}
           target="_blank"
           rel="noopener noreferrer"
           className="restaurant-info-button whatsapp"
         >
-          <span>💬</span>
-          <span>WhatsApp</span>
-        </a>
-
+          {" "}
+          <span>💬</span> <span>{t("restaurant.whatsapp")}</span>{" "}
+        </a>{" "}
         {locationUrl && (
           <a
             href={locationUrl}
@@ -64,22 +62,21 @@ function RestaurantInfo({
             rel="noopener noreferrer"
             className="restaurant-info-button"
           >
-            <span>📍</span>
-            <span>Location</span>
+            {" "}
+            <span>📍</span> <span>{t("restaurant.location")}</span>{" "}
           </a>
-        )}
-      </div>
-
+        )}{" "}
+      </div>{" "}
       <div className="restaurant-address">
-        <span className="address-icon">📍</span>
-
+        {" "}
+        <span className="address-icon">📍</span>{" "}
         <div>
-          <span className="address-label">Address</span>
-          <p>{address}</p>
-        </div>
-      </div>
+          {" "}
+          <span className="address-label">{t("checkout.address")}</span>{" "}
+          <p>{address}</p>{" "}
+        </div>{" "}
+      </div>{" "}
     </section>
   );
 }
-
 export default RestaurantInfo;
