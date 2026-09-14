@@ -11,14 +11,13 @@ import CartDrawer from "../../components/cart/CartDrawer";
 import { useRestaurant } from "../../hooks/useRestaurant";
 import { useMenu } from "../../hooks/useMenu";
 import { useMenuView } from "../../hooks/useMenuView";
+import { useOpenStatus } from "../../hooks/useOpenStatus";
 import "./RestaurantMenu.css";
 import "../../components/restaurant/restaurant.css";
 
 function RestaurantMenu() {
   const { t } = useTranslation();
-  const { restaurantSlug } = useParams<{
-    restaurantSlug: string;
-  }>();
+  const { restaurantSlug } = useParams<{ restaurantSlug: string }>();
 
   const {
     restaurant,
@@ -32,6 +31,11 @@ function RestaurantMenu() {
     loading: menuLoading,
     error: menuError,
   } = useMenu(restaurant?.id);
+
+  const { isOpen, closingTime, openingTime, openingDayOffset } = useOpenStatus(
+    restaurant?.id,
+    restaurant?.timezone,
+  );
 
   useMenuView(restaurant?.id);
 
@@ -54,13 +58,10 @@ function RestaurantMenu() {
   const filteredItems = items.filter((item) => {
     const matchesCategory =
       selectedCategory === "all" || item.categoryId === selectedCategory;
-
     const searchText = search.toLowerCase();
-
     const matchesSearch =
       item.name.toLowerCase().includes(searchText) ||
       item.description.toLowerCase().includes(searchText);
-
     return matchesCategory && matchesSearch;
   });
 
@@ -74,7 +75,10 @@ function RestaurantMenu() {
       />
 
       <RestaurantInfo
-        isOpen={true /* TODO: derive from restaurant_hours + timezone */}
+        isOpen={isOpen}
+        closingTime={closingTime}
+        openingTime={openingTime}
+        openingDayOffset={openingDayOffset}
         phone={restaurant.phone}
         whatsapp={restaurant.whatsapp}
         address={restaurant.address}
@@ -102,9 +106,7 @@ function RestaurantMenu() {
         />
 
         {menuLoading && <p>{t("menu.loading")}</p>}
-
         {menuError && <p>{t("menu.error", { error: menuError })}</p>}
-
         {!menuLoading && !menuError && <MenuList items={filteredItems} />}
       </section>
 

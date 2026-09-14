@@ -8,6 +8,7 @@ import MenuItemForm from "../../components/dashboard/MenuItemForm/MenuItemForm";
 import type { MenuItem } from "../../types/menu";
 import "./Dashboard.css";
 import { useTranslation } from "react-i18next";
+import Spinner from "../../components/common/Spinner";
 
 function DashboardMenu() {
   const { t } = useTranslation();
@@ -41,14 +42,16 @@ function DashboardMenu() {
             {t("dashboard.menu.addItem")}
           </button>
         </div>
-
-        {loading && <p>{t("dashboard.menu.loading")}</p>}
+        {loading && (
+          <p className="dashboard-loading">
+            <Spinner size={16} inline /> {t("dashboard.menu.loading")}
+          </p>
+        )}{" "}
         {error && (
           <p className="dashboard-error">
             {t("dashboard.menu.error")} {error}
           </p>
         )}
-
         {!loading && !error && (
           <>
             <CategoryManager
@@ -72,7 +75,6 @@ function DashboardMenu() {
             )}
           </>
         )}
-
         {formOpen && (
           <MenuItemForm
             restaurantId={restaurantId}

@@ -14,33 +14,40 @@ function LanguageSwitcher({ inline = false }: LanguageSwitcherProps) {
     if (switching) return;
     setSwitching(true);
 
-    document.documentElement.classList.add("lang-transitioning");
-
-    // let the fade-out play, then swap language, then fade back in
+    // brief delay so the overlay is visible before the actual switch happens
     setTimeout(() => {
       i18n.changeLanguage(i18n.language === "ar" ? "en" : "ar");
 
+      // hold the overlay a touch longer after switching so layout settles
+      // (RTL/LTR flip, font change) before revealing it
       setTimeout(() => {
-        document.documentElement.classList.remove("lang-transitioning");
         setSwitching(false);
-      }, 150);
+      }, 200);
     }, 150);
   };
 
   return (
-    <button
-      type="button"
-      className={
-        inline
-          ? "language-switcher language-switcher-inline"
-          : "language-switcher"
-      }
-      onClick={toggle}
-      disabled={switching}
-    >
-      <span className="language-switcher-icon">{switching ? "⏳" : "🌐"}</span>
-      <span>{i18n.language === "ar" ? "English" : "العربية"}</span>
-    </button>
+    <>
+      <button
+        type="button"
+        className={
+          inline
+            ? "language-switcher language-switcher-inline"
+            : "language-switcher"
+        }
+        onClick={toggle}
+        disabled={switching}
+      >
+        <span className="language-switcher-icon">🌐</span>
+        <span>{i18n.language === "ar" ? "English" : "العربية"}</span>
+      </button>
+
+      {switching && (
+        <div className="language-switch-overlay">
+          <div className="language-switch-spinner" />
+        </div>
+      )}
+    </>
   );
 }
 

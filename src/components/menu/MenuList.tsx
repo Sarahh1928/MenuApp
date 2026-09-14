@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { MenuItem } from "../../types/menu";
 import MenuItemCard from "./MenuItemCard";
 
@@ -6,10 +7,11 @@ interface MenuListProps {
 }
 
 function MenuList({ items }: MenuListProps) {
+  const { t } = useTranslation();
   if (items.length === 0) {
     return (
       <div className="menu-list-empty">
-        <p>No menu items found.</p>
+        <p>{t("menu.noItems")}</p>
       </div>
     );
   }

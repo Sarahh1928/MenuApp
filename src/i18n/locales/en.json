@@ -52,9 +52,15 @@
     "closed": "Closed",
     "closesAt": "Closes at",
     "opensAt": "Opens at",
+    "addressLabel": "Address",
     "call": "Call",
     "whatsapp": "WhatsApp",
-    "location": "Location"
+    "location": "Location",
+    "pm": "PM",
+    "am": "AM",
+    "tomorrow": "tomorrow at",
+    "dayOffset_one": "in {{count}} day at",
+    "dayOffset_other": "in {{count}} days at"
   },
   "login": {
     "title": "Restaurant login",
@@ -83,9 +89,12 @@
       "pickup": "Pickup",
       "delivery": "Delivery",
       "justNow": "just now",
-      "minutesAgo": "{{count}}m ago",
-      "hoursAgo": "{{count}}h ago",
-      "daysAgo": "{{count}}d ago",
+      "minutesAgo_one": "{{count}}m ago",
+      "minutesAgo_other": "{{count}}m ago",
+      "hoursAgo_one": "{{count}}h ago",
+      "hoursAgo_other": "{{count}}h ago",
+      "daysAgo_one": "{{count}}d ago",
+      "daysAgo_other": "{{count}}d ago",
       "total": "Total",
       "messageCustomer": "Message customer"
     },

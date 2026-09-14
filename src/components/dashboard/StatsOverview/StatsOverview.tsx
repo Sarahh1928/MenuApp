@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "../../../lib/supabase";
 import { useMenuStats } from "../../../hooks/useMenuStats";
 import "./StatsOverview.css";
+import Spinner from "../../common/Spinner";
 
 interface StatsOverviewProps {
   restaurantId: string;
@@ -24,14 +25,19 @@ function StatsOverview({ restaurantId }: StatsOverviewProps) {
 
   const maxCount = Math.max(1, ...data.map((d) => d.count));
 
+  if (loading) {
+    return (
+      <p className="dashboard-loading">
+        <Spinner size={16} inline /> {t("dashboard.stats.loading")}
+      </p>
+    );
+  }
   return (
     <div className="stats-overview">
       <div className="stats-total-card">
         <span>{t("dashboard.stats.totalViews")}</span>
         <strong>{totalViews ?? "—"}</strong>
       </div>
-
-      {loading && <p>{t("dashboard.stats.loading")}</p>}
 
       {error && (
         <p className="dashboard-error">

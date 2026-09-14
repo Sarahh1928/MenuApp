@@ -4,6 +4,7 @@ import { supabase } from "../../../lib/supabase";
 import { uploadImage } from "../../../lib/storage";
 import type { Restaurant } from "../../../types/restaurant";
 import "./RestaurantProfileForm.css";
+import Spinner from "../../common/Spinner";
 
 interface RestaurantProfileFormProps {
   restaurantId: string;
@@ -97,7 +98,11 @@ function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
   };
 
   if (loading) {
-    return <p>{t("dashboard.profile.loading")}</p>;
+    return (
+      <p className="dashboard-loading">
+        <Spinner size={16} inline /> {t("dashboard.profile.loading")}
+      </p>
+    );
   }
 
   return (

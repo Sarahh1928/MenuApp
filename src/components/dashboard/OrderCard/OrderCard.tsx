@@ -10,20 +10,20 @@ function timeAgo(dateString: string, t: any) {
   const diffMs = Date.now() - new Date(dateString).getTime();
   const mins = Math.floor(diffMs / 60000);
 
-  if (mins < 1) return t("dashoboard.orders.justNow");
+  if (mins < 1) return t("dashboard.orders.justNow");
   if (mins < 60) {
-    return t("dashoboard.orders.minutesAgo", { count: mins });
+    return t("dashboard.orders.minutesAgo", { count: mins });
   }
 
   const hours = Math.floor(mins / 60);
 
   if (hours < 24) {
-    return t("dashoboard.orders.hoursAgo", { count: hours });
+    return t("dashboard.orders.hoursAgo", { count: hours });
   }
 
   const days = Math.floor(hours / 24);
 
-  return t("dashoboard.orders.daysAgo", { count: days });
+  return t("dashboard.orders.daysAgo", { count: days });
 }
 
 function OrderCard({ order }: OrderCardProps) {
@@ -36,8 +36,8 @@ function OrderCard({ order }: OrderCardProps) {
 
         <span className={`order-fulfillment ${order.fulfillment_type}`}>
           {order.fulfillment_type === "pickup"
-            ? `🥡 ${t("dashoboard.orders.pickup")}`
-            : `🛵 ${t("dashoboard.orders.delivery")}`}
+            ? `🥡 ${t("dashboard.orders.pickup")}`
+            : `🛵 ${t("dashboard.orders.delivery")}`}
         </span>
 
         <span className="order-time">{timeAgo(order.created_at, t)}</span>
@@ -64,7 +64,7 @@ function OrderCard({ order }: OrderCardProps) {
       </ul>
 
       <div className="order-total">
-        <span>{t("dashoboard.orders.total")}</span>
+        <span>{t("dashboard.orders.total")}</span>
 
         <strong>
           {order.total.toFixed(2)} {t("cart.currency")}
@@ -77,7 +77,7 @@ function OrderCard({ order }: OrderCardProps) {
         rel="noopener noreferrer"
         className="order-whatsapp-btn"
       >
-        💬 {t("dashoboard.orders.messageCustomer")}
+        💬 {t("dashboard.orders.messageCustomer")}
       </a>
     </div>
   );

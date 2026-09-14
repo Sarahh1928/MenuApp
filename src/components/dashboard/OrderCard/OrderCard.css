@@ -40,7 +40,7 @@
 }
 
 .order-time {
-  margin-left: auto;
+  margin-inline-start: auto;
   color: var(--ink-faint);
 }
 
@@ -75,7 +75,7 @@
 }
 
 .order-item-price {
-  margin-left: auto;
+  margin-inline-start: auto;
   color: var(--ink-faint);
   font-weight: 600;
 }

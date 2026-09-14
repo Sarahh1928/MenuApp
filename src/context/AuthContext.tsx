@@ -7,26 +7,34 @@ interface AuthContextValue {
   user: AuthUser | null;
   restaurantId: string | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signIn: (
+    email: string,
+    password: string,
+  ) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+export const AuthContext = createContext<AuthContextValue | undefined>(
+  undefined,
+);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [restaurantId, setRestaurantId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  const [restaurantLoading, setRestaurantLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
-      setLoading(false);
+      setSessionLoading(false);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, newSession) => {
+        setSession(newSession);
+      },
+    );
 
     return () => listener.subscription.unsubscribe();
   }, []);
@@ -34,10 +42,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!session?.user) {
       setRestaurantId(null);
+      setRestaurantLoading(false);
       return;
     }
 
     let cancelled = false;
+    setRestaurantLoading(true);
 
     supabase
       .from("restaurant_owners")
@@ -46,7 +56,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .single()
       .then(({ data, error }) => {
         if (cancelled) return;
-        setRestaurantId(error ? null : data?.restaurant_id ?? null);
+        setRestaurantId(error ? null : (data?.restaurant_id ?? null));
+        setRestaurantLoading(false);
       });
 
     return () => {
@@ -55,7 +66,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [session]);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     return { error: error?.message ?? null };
   };
 
@@ -67,8 +81,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     ? { id: session.user.id, email: session.user.email ?? null }
     : null;
 
+  const loading = sessionLoading || restaurantLoading;
+
   return (
-    <AuthContext.Provider value={{ user, restaurantId, loading, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user, restaurantId, loading, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

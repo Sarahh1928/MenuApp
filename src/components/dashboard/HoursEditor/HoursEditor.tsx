@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "../../../lib/supabase";
 import type { RestaurantHours } from "../../../types/restaurant";
 import "./HoursEditor.css";
+import Spinner from "../../common/Spinner";
 
 const DAYS = [
   "sunday",
@@ -79,9 +80,12 @@ function HoursEditor({ restaurantId }: HoursEditorProps) {
   };
 
   if (loading) {
-    return <p>{t("dashboard.hours.loading")}</p>;
+    return (
+      <p className="dashboard-loading">
+        <Spinner size={16} inline /> {t("dashboard.hours.loading")}
+      </p>
+    );
   }
-
   return (
     <div className="hours-editor">
       {hours.map((h, i) => (

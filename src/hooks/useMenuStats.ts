@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 export interface DailyViewCount {
@@ -11,32 +11,54 @@ export function useMenuStats(restaurantId: string | undefined, days = 14) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchStats = useCallback(async () => {
     if (!restaurantId) return;
-    let cancelled = false;
-    setLoading(true);
     setError(null);
 
     const since = new Date();
     since.setDate(since.getDate() - days);
 
-    supabase
+    const { data, error } = await supabase
       .from("menu_views")
       .select("day, count")
       .eq("restaurant_id", restaurantId)
       .gte("day", since.toISOString().slice(0, 10))
-      .order("day", { ascending: true })
-      .then(({ data, error }) => {
-        if (cancelled) return;
-        if (error) setError(error.message);
-        else setData((data ?? []) as DailyViewCount[]);
-        setLoading(false);
-      });
+      .order("day", { ascending: true });
+
+    if (error) setError(error.message);
+    else setData((data ?? []) as DailyViewCount[]);
+
+    setLoading(false);
+  }, [restaurantId, days]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchStats();
+  }, [fetchStats]);
+
+  useEffect(() => {
+    if (!restaurantId) return;
+
+    const channel = supabase
+      .channel(`menu-views-${restaurantId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*", // insert (first view of the day) and update (subsequent views)
+          schema: "public",
+          table: "menu_views",
+          filter: `restaurant_id=eq.${restaurantId}`,
+        },
+        () => {
+          fetchStats();
+        },
+      )
+      .subscribe();
 
     return () => {
-      cancelled = true;
+      supabase.removeChannel(channel);
     };
-  }, [restaurantId, days]);
+  }, [restaurantId, fetchStats]);
 
   return { data, loading, error };
 }

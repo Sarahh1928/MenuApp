@@ -28,9 +28,10 @@
 ===================================================== */
 
 .dashboard-topbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 24px;
 
   position: sticky;
@@ -51,8 +52,11 @@
 }
 
 .dashboard-topbar-nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
   display: flex;
-  justify-content: center;
   gap: 4px;
 }
 

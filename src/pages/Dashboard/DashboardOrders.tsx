@@ -4,6 +4,7 @@ import DashboardLayout from "../../components/dashboard/DashboardLayout/Dashboar
 import OrdersList from "../../components/dashboard/OrdersList/OrdersList";
 import "./Dashboard.css";
 import { useTranslation } from "react-i18next";
+import Spinner from "../../components/common/Spinner";
 
 function DashboardOrders() {
   const { t } = useTranslation();
@@ -27,8 +28,11 @@ function DashboardOrders() {
             ↻ {t("dashboard.orders.refresh")}
           </button>
         </div>
-
-        {loading && <p>{t("dashboard.orders.loading")}</p>}
+        {loading && (
+          <p className="dashboard-loading">
+            <Spinner size={16} inline /> {t("dashboard.orders.loading")}
+          </p>
+        )}
         {error && (
           <p className="dashboard-error">
             {t("dashboard.orders.error")} {error}
