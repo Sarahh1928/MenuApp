@@ -79,18 +79,18 @@ function RestaurantInfo({
             className="restaurant-info-button"
           >
             <span>📍</span>
-            <span>{t("restaurant.location")}</span>
+            <span>{t("restaurant.viewLocation")}</span>
           </a>
         )}
       </div>
-
+      {/* 
       <div className="restaurant-address">
         <span className="address-icon">📍</span>
         <div>
           <span className="address-label">{t("restaurant.addressLabel")}</span>
           <p>{address}</p>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }

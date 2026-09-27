@@ -1,7 +1,7 @@
-interface Category {
-  id: string;
-  name: string;
-}
+import { useTranslation } from "react-i18next";
+import { localizedName } from "../../lib/localize";
+import type { Category } from "../../types/restaurant";
+import { t } from "i18next";
 
 interface CategoryTabsProps {
   categories: Category[];
@@ -14,6 +14,9 @@ function CategoryTabs({
   selectedCategory,
   onCategoryChange,
 }: CategoryTabsProps) {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+
   return (
     <div className="category-tabs">
       <button
@@ -21,7 +24,7 @@ function CategoryTabs({
         className={selectedCategory === "all" ? "active" : ""}
         onClick={() => onCategoryChange("all")}
       >
-        All
+        {t("menu.all")}
       </button>
 
       {categories.map((category) => (
@@ -31,7 +34,7 @@ function CategoryTabs({
           className={selectedCategory === category.id ? "active" : ""}
           onClick={() => onCategoryChange(category.id)}
         >
-          {category.name}
+          {localizedName(category, lang)}
         </button>
       ))}
     </div>

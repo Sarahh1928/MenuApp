@@ -1,0 +1,43 @@
+.notfound-page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #f7f1e7;
+}
+
+.notfound-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  max-width: 420px;
+  padding: 40px 32px;
+
+  text-align: center;
+
+  background: #fffdf8;
+  border: 1px solid #e8dfd1;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(65, 48, 28, 0.08);
+}
+
+.notfound-icon {
+  font-size: 44px;
+}
+
+.notfound-card h1 {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: 24px;
+  color: #1d1a17;
+}
+
+.notfound-card p {
+  margin: 0;
+  color: #81776a;
+  font-size: 14px;
+  line-height: 1.6;
+}

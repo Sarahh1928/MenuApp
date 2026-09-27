@@ -9,23 +9,18 @@ export interface Restaurant {
   id: string;
   slug: string;
   name: string;
+  nameAr: string;
+  nameEn: string | null;
   description: string | null;
+  descriptionAr: string | null;
+  descriptionEn: string | null;
   logo_url: string | null;
   cover_url: string | null;
   phone: string;
   whatsapp: string;
-  address: string;
+  locationUrl: string | null;
   lat: number | null;
   lng: number | null;
   timezone: string;
   view_count: number;
-}
-
-export interface Category {
-  id: string;
-  restaurant_id: string;
-  name: string;
-  nameAr: string;
-  nameEn: string | null;
-  sort_order: number;
 }

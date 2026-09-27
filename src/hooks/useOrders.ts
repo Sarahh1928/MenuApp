@@ -1,32 +1,26 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
 import type { Order } from "../types/order";
 
-export function useOrders(restaurantId: string | undefined) {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export function useOrders(restaurantId: string | null | undefined) {
+  const queryClient = useQueryClient();
 
-  const fetchOrders = useCallback(async () => {
-    if (!restaurantId) return;
-    setLoading(true);
-    setError(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["orders", restaurantId],
+    enabled: !!restaurantId,
+    staleTime: 30 * 1000,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("restaurant_id", restaurantId)
+        .order("created_at", { ascending: false });
 
-    const { data, error } = await supabase
-      .from("orders")
-      .select("*")
-      .eq("restaurant_id", restaurantId)
-      .order("created_at", { ascending: false });
-
-    if (error) setError(error.message);
-    else setOrders((data ?? []) as Order[]);
-
-    setLoading(false);
-  }, [restaurantId]);
-
-  useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+      if (error) throw new Error(error.message);
+      return (data ?? []) as Order[];
+    },
+  });
 
   useEffect(() => {
     if (!restaurantId) return;
@@ -41,16 +35,22 @@ export function useOrders(restaurantId: string | undefined) {
           table: "orders",
           filter: `restaurant_id=eq.${restaurantId}`,
         },
-        (payload) => {
-          setOrders((current) => [payload.new as Order, ...current]);
-        }
+        () => {
+          queryClient.invalidateQueries({ queryKey: ["orders", restaurantId] });
+        },
       )
       .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [restaurantId]);
+  }, [restaurantId, queryClient]);
 
-  return { orders, loading, error, refetch: fetchOrders };
+  return {
+    orders: data ?? [],
+    loading: isLoading,
+    error: error instanceof Error ? error.message : null,
+    refetch: () =>
+      queryClient.invalidateQueries({ queryKey: ["orders", restaurantId] }),
+  };
 }

@@ -14,6 +14,7 @@ import { useMenuView } from "../../hooks/useMenuView";
 import { useOpenStatus } from "../../hooks/useOpenStatus";
 import "./RestaurantMenu.css";
 import "../../components/restaurant/restaurant.css";
+import Spinner from "../../components/common/Spinner";
 
 function RestaurantMenu() {
   const { t } = useTranslation();
@@ -45,7 +46,9 @@ function RestaurantMenu() {
 
   if (restaurantLoading) {
     return (
-      <div className="restaurant-page-status">{t("restaurant.loading")}</div>
+      <p className="dashboard-loading">
+        <Spinner size={16} inline /> {t("restaurant.loading")}
+      </p>
     );
   }
 
@@ -67,12 +70,7 @@ function RestaurantMenu() {
 
   return (
     <main className="restaurant-page">
-      <RestaurantHeader
-        name={restaurant.name}
-        description={restaurant.description ?? ""}
-        image={restaurant.cover_url ?? ""}
-        logo={restaurant.logo_url ?? undefined}
-      />
+      <RestaurantHeader restaurant={restaurant} />
 
       <RestaurantInfo
         isOpen={isOpen}
@@ -81,19 +79,13 @@ function RestaurantMenu() {
         openingDayOffset={openingDayOffset}
         phone={restaurant.phone}
         whatsapp={restaurant.whatsapp}
-        address={restaurant.address}
-        locationUrl={
-          restaurant.lat && restaurant.lng
-            ? `https://maps.google.com/?q=${restaurant.lat},${restaurant.lng}`
-            : undefined
-        }
+        locationUrl={restaurant.locationUrl}
       />
 
       <section className="menu-section">
         <div className="menu-heading">
           <div>
             <h2>{t("menu.ourMenu")}</h2>
-            <p>{restaurant.description}</p>
           </div>
         </div>
 
@@ -105,7 +97,11 @@ function RestaurantMenu() {
           onCategoryChange={setSelectedCategory}
         />
 
-        {menuLoading && <p>{t("menu.loading")}</p>}
+        {menuLoading && (
+          <p className="dashboard-loading">
+            <Spinner size={16} inline /> {t("dashboard.menu.loading")}
+          </p>
+        )}
         {menuError && <p>{t("menu.error", { error: menuError })}</p>}
         {!menuLoading && !menuError && <MenuList items={filteredItems} />}
       </section>

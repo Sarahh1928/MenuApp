@@ -11,14 +11,17 @@ interface RestaurantProfileFormProps {
 }
 
 function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const uiDir = i18n.language === "ar" ? "rtl" : "ltr";
 
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [nameAr, setNameAr] = useState("");
+  const [nameEn, setNameEn] = useState("");
+  const [descriptionAr, setDescriptionAr] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState("");
   const [phone, setPhone] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
-  const [address, setAddress] = useState("");
+  const [locationUrl, setLocationUrl] = useState("");
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState("");
@@ -36,24 +39,24 @@ function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
       .single()
       .then(({ data }) => {
         if (!data) return;
+        const row = data as any;
 
-        const r = data as Restaurant;
-
-        setRestaurant(r);
-        setName(r.name);
-        setDescription(r.description ?? "");
-        setPhone(r.phone);
-        setWhatsapp(r.whatsapp);
-        setAddress(r.address);
-        setLogoPreview(r.logo_url ?? "");
-        setCoverPreview(r.cover_url ?? "");
+        setRestaurant(row);
+        setNameAr(row.name_ar ?? row.name ?? "");
+        setNameEn(row.name_en ?? "");
+        setDescriptionAr(row.description_ar ?? row.description ?? "");
+        setDescriptionEn(row.description_en ?? "");
+        setPhone(row.phone ?? "");
+        setWhatsapp(row.whatsapp ?? "");
+        setLocationUrl(row.location_url ?? "");
+        setLogoPreview(row.logo_url ?? "");
+        setCoverPreview(row.cover_url ?? "");
         setLoading(false);
       });
   }, [restaurantId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setSaving(true);
     setSaved(false);
     setError(null);
@@ -62,31 +65,29 @@ function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
       let logoUrl = restaurant?.logo_url ?? null;
       let coverUrl = restaurant?.cover_url ?? null;
 
-      if (logoFile) {
+      if (logoFile)
         logoUrl = await uploadImage(logoFile, `${restaurantId}/profile`);
-      }
-
-      if (coverFile) {
+      if (coverFile)
         coverUrl = await uploadImage(coverFile, `${restaurantId}/profile`);
-      }
 
       const { error: dbError } = await supabase
         .from("restaurants")
         .update({
-          name: name.trim(),
-          description: description.trim(),
+          name: nameAr.trim(),
+          name_ar: nameAr.trim(),
+          name_en: nameEn.trim() || null,
+          description: descriptionAr.trim(),
+          description_ar: descriptionAr.trim(),
+          description_en: descriptionEn.trim() || null,
           phone: phone.trim(),
           whatsapp: whatsapp.trim(),
-          address: address.trim(),
+          location_url: locationUrl.trim() || null,
           logo_url: logoUrl,
           cover_url: coverUrl,
         })
         .eq("id", restaurantId);
 
-      if (dbError) {
-        throw new Error(dbError.message);
-      }
-
+      if (dbError) throw new Error(dbError.message);
       setSaved(true);
     } catch (err) {
       setError(
@@ -107,29 +108,66 @@ function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
 
   return (
     <form className="profile-form" onSubmit={handleSubmit}>
-      <label>
-        {t("dashboard.profile.name")}
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </label>
+      <div className="profile-form-row bilingual-row">
+        <label className="field-en">
+          <span className="field-label-row" dir={uiDir}>
+            {t("dashboard.profile.nameEn")}
+            <span className="field-optional">
+              {t("dashboard.profile.optional")}
+            </span>
+          </span>
+          <input
+            value={nameEn}
+            onChange={(e) => setNameEn(e.target.value)}
+            dir="ltr"
+          />
+        </label>
 
-      <label>
-        {t("dashboard.profile.description")}
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </label>
+        <label className="field-ar">
+          {t("dashboard.profile.nameAr")}
+          <input
+            value={nameAr}
+            onChange={(e) => setNameAr(e.target.value)}
+            dir="rtl"
+            required
+          />
+        </label>
+      </div>
+
+      <div className="profile-form-row bilingual-row">
+        <label className="field-en">
+          <span className="field-label-row" dir={uiDir}>
+            {t("dashboard.profile.descriptionEn")}
+            <span className="field-optional">
+              {t("dashboard.profile.optional")}
+            </span>
+          </span>
+          <textarea
+            value={descriptionEn}
+            onChange={(e) => setDescriptionEn(e.target.value)}
+            dir="ltr"
+          />
+        </label>
+
+        <label className="field-ar">
+          {t("dashboard.profile.descriptionAr")}
+          <textarea
+            value={descriptionAr}
+            onChange={(e) => setDescriptionAr(e.target.value)}
+            dir="rtl"
+          />
+        </label>
+      </div>
 
       <div className="profile-form-row">
         <label>
           {t("dashboard.profile.phone")}
           <input
+            type="tel"
+            className="ltr-field"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            dir="ltr"
             required
           />
         </label>
@@ -137,19 +175,28 @@ function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
         <label>
           {t("dashboard.profile.whatsapp")}
           <input
+            type="tel"
+            className="ltr-field"
             value={whatsapp}
             onChange={(e) => setWhatsapp(e.target.value)}
+            dir="ltr"
             required
           />
         </label>
       </div>
 
       <label>
-        {t("dashboard.profile.address")}
-        <textarea
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          required
+        {t("dashboard.profile.locationUrl")}
+        <span className="field-hint">
+          {t("dashboard.profile.locationUrlHint")}
+        </span>
+        <input
+          type="url"
+          className="ltr-field"
+          value={locationUrl}
+          onChange={(e) => setLocationUrl(e.target.value)}
+          dir="ltr"
+          placeholder="https://maps.google.com/?q=..."
         />
       </label>
 
@@ -161,15 +208,10 @@ function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
             accept="image/*"
             onChange={(e) => {
               const file = e.target.files?.[0] ?? null;
-
               setLogoFile(file);
-
-              if (file) {
-                setLogoPreview(URL.createObjectURL(file));
-              }
+              if (file) setLogoPreview(URL.createObjectURL(file));
             }}
           />
-
           {logoPreview && (
             <img
               src={logoPreview}
@@ -186,15 +228,10 @@ function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
             accept="image/*"
             onChange={(e) => {
               const file = e.target.files?.[0] ?? null;
-
               setCoverFile(file);
-
-              if (file) {
-                setCoverPreview(URL.createObjectURL(file));
-              }
+              if (file) setCoverPreview(URL.createObjectURL(file));
             }}
           />
-
           {coverPreview && (
             <img
               src={coverPreview}
@@ -206,7 +243,6 @@ function RestaurantProfileForm({ restaurantId }: RestaurantProfileFormProps) {
       </div>
 
       {error && <p className="dashboard-error">{error}</p>}
-
       {saved && <p className="profile-saved">{t("dashboard.profile.saved")}</p>}
 
       <button type="submit" className="profile-save-btn" disabled={saving}>

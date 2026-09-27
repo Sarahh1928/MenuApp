@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
 import { computeOpenStatus, type OpenStatus } from "../lib/openStatus";
 import type { RestaurantHours } from "../types/restaurant";
@@ -7,35 +8,33 @@ export function useOpenStatus(
   restaurantId: string | undefined,
   timezone: string | undefined,
 ) {
-  const [status, setStatus] = useState<OpenStatus>({ isOpen: false });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!restaurantId || !timezone) return;
-    let cancelled = false;
-
-    const fetchAndCompute = () => {
-      supabase
+  const { data: hours, isLoading } = useQuery({
+    queryKey: ["restaurant-hours", restaurantId],
+    enabled: !!restaurantId,
+    staleTime: 30 * 60 * 1000,
+    queryFn: async () => {
+      const { data, error } = await supabase
         .from("restaurant_hours")
         .select("*")
-        .eq("restaurant_id", restaurantId)
-        .then(({ data, error }) => {
-          if (cancelled) return;
-          if (!error && data) {
-            setStatus(computeOpenStatus(data as RestaurantHours[], timezone));
-          }
-          setLoading(false);
-        });
-    };
+        .eq("restaurant_id", restaurantId);
 
-    fetchAndCompute();
-    const interval = setInterval(fetchAndCompute, 60_000);
+      if (error) throw new Error(error.message);
+      return (data ?? []) as RestaurantHours[];
+    },
+  });
 
-    return () => {
-      cancelled = true;
-      clearInterval(interval);
-    };
-  }, [restaurantId, timezone]);
+  const [status, setStatus] = useState<OpenStatus>({ isOpen: false });
 
-  return { ...status, loading };
+  useEffect(() => {
+    if (!hours || !timezone) return;
+
+    const recompute = () => setStatus(computeOpenStatus(hours, timezone));
+
+    recompute();
+    const interval = setInterval(recompute, 60_000);
+
+    return () => clearInterval(interval);
+  }, [hours, timezone]);
+
+  return { ...status, loading: isLoading };
 }

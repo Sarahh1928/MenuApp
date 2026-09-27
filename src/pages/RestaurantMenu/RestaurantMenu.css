@@ -532,8 +532,6 @@
 
   transform: translateX(-50%);
 
-  min-width: 260px;
-
   display: flex;
   align-items: center;
 
@@ -744,11 +742,11 @@
   }
 
   .floating-cart {
-    width: calc(100% - 24px);
 
     bottom: 12px;
 
     justify-content: center;
+    width: max-content;
   }
   .menu-search {
     margin-bottom: 16px;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
 import type { Category } from "../types/restaurant";
 import type { MenuItem } from "../types/menu";
@@ -54,37 +54,40 @@ function mapCategory(row: DbCategory): Category {
 }
 
 export function useMenu(restaurantId: string | undefined) {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [items, setItems] = useState<MenuItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const fetchMenu = useCallback(async () => {
-    if (!restaurantId) return;
-    setLoading(true);
-    setError(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["menu", restaurantId],
+    enabled: !!restaurantId,
+    queryFn: async () => {
+      const [categoriesRes, itemsRes] = await Promise.all([
+        supabase
+          .from("categories")
+          .select("*")
+          .eq("restaurant_id", restaurantId)
+          .order("sort_order", { ascending: true }),
+        supabase
+          .from("menu_items")
+          .select("*")
+          .eq("restaurant_id", restaurantId),
+      ]);
 
-    const [categoriesRes, itemsRes] = await Promise.all([
-      supabase
-        .from("categories")
-        .select("*")
-        .eq("restaurant_id", restaurantId)
-        .order("sort_order", { ascending: true }),
-      supabase.from("menu_items").select("*").eq("restaurant_id", restaurantId),
-    ]);
+      if (categoriesRes.error) throw new Error(categoriesRes.error.message);
+      if (itemsRes.error) throw new Error(itemsRes.error.message);
 
-    if (categoriesRes.error) setError(categoriesRes.error.message);
-    else setCategories((categoriesRes.data as DbCategory[]).map(mapCategory));
+      return {
+        categories: (categoriesRes.data as DbCategory[]).map(mapCategory),
+        items: (itemsRes.data as DbMenuItem[]).map(mapItem),
+      };
+    },
+  });
 
-    if (itemsRes.error) setError(itemsRes.error.message);
-    else setItems((itemsRes.data as DbMenuItem[]).map(mapItem));
-
-    setLoading(false);
-  }, [restaurantId]);
-
-  useEffect(() => {
-    fetchMenu();
-  }, [fetchMenu]);
-
-  return { categories, items, loading, error, refetch: fetchMenu };
+  return {
+    categories: data?.categories ?? [],
+    items: data?.items ?? [],
+    loading: isLoading,
+    error: error instanceof Error ? error.message : null,
+    refetch: () =>
+      queryClient.invalidateQueries({ queryKey: ["menu", restaurantId] }),
+  };
 }

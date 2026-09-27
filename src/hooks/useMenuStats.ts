@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
 
 export interface DailyViewCount {
@@ -7,34 +8,27 @@ export interface DailyViewCount {
 }
 
 export function useMenuStats(restaurantId: string | undefined, days = 14) {
-  const [data, setData] = useState<DailyViewCount[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const queryKey = ["menu-stats", restaurantId, days];
 
-  const fetchStats = useCallback(async () => {
-    if (!restaurantId) return;
-    setError(null);
+  const { data, isLoading, error } = useQuery({
+    queryKey,
+    enabled: !!restaurantId,
+    queryFn: async () => {
+      const since = new Date();
+      since.setDate(since.getDate() - days);
 
-    const since = new Date();
-    since.setDate(since.getDate() - days);
+      const { data, error } = await supabase
+        .from("menu_views")
+        .select("day, count")
+        .eq("restaurant_id", restaurantId)
+        .gte("day", since.toISOString().slice(0, 10))
+        .order("day", { ascending: true });
 
-    const { data, error } = await supabase
-      .from("menu_views")
-      .select("day, count")
-      .eq("restaurant_id", restaurantId)
-      .gte("day", since.toISOString().slice(0, 10))
-      .order("day", { ascending: true });
-
-    if (error) setError(error.message);
-    else setData((data ?? []) as DailyViewCount[]);
-
-    setLoading(false);
-  }, [restaurantId, days]);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchStats();
-  }, [fetchStats]);
+      if (error) throw new Error(error.message);
+      return (data ?? []) as DailyViewCount[];
+    },
+  });
 
   useEffect(() => {
     if (!restaurantId) return;
@@ -44,13 +38,13 @@ export function useMenuStats(restaurantId: string | undefined, days = 14) {
       .on(
         "postgres_changes",
         {
-          event: "*", // insert (first view of the day) and update (subsequent views)
+          event: "*",
           schema: "public",
           table: "menu_views",
           filter: `restaurant_id=eq.${restaurantId}`,
         },
         () => {
-          fetchStats();
+          queryClient.invalidateQueries({ queryKey });
         },
       )
       .subscribe();
@@ -58,7 +52,11 @@ export function useMenuStats(restaurantId: string | undefined, days = 14) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [restaurantId, fetchStats]);
+  }, [restaurantId, days, queryClient]);
 
-  return { data, loading, error };
+  return {
+    data: data ?? [],
+    loading: isLoading,
+    error: error instanceof Error ? error.message : null,
+  };
 }

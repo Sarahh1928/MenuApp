@@ -1,16 +1,23 @@
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import Spinner from "../common/Spinner";
+import { useTranslation } from "react-i18next";
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { t } = useTranslation();
   const { user, restaurantId, loading } = useAuth();
 
   if (loading) {
-    return <div className="auth-loading">Loading...</div>;
+    return (
+      <p className="dashboard-loading">
+        <Spinner size={16} inline /> {t("restaurant.loading")}
+      </p>
+    );
   }
 
   if (!user) {

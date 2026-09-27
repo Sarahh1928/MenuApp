@@ -117,3 +117,59 @@
     flex-direction: column;
   }
 }
+.field-label-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.field-optional {
+  font-weight: 400;
+  color: var(--ink-faint);
+  font-size: 11px;
+}
+/* Bilingual rows: English always left, Arabic always right,
+   regardless of which interface language is active */
+.bilingual-row {
+  direction: ltr;
+}
+.profile-form label {
+  text-align: left;
+}
+
+[dir="rtl"] .profile-form label {
+  text-align: right;
+}.field-label-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  justify-content: flex-start;
+}
+
+.field-en input,
+.field-en textarea {
+  text-align: left;
+}
+
+[dir="rtl"] .field-en input,
+[dir="rtl"] .field-en textarea {
+  text-align: right;
+}
+
+.field-ar input,
+.field-ar textarea {
+  text-align: left;
+}
+
+[dir="rtl"] .field-ar input,
+[dir="rtl"] .field-ar textarea {
+  text-align: right;
+}
+
+.ltr-field {
+  text-align: left;
+}
+
+[dir="rtl"] .ltr-field {
+  text-align: right;
+}

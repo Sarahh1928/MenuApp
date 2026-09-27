@@ -4,6 +4,7 @@ import type { Restaurant } from "../../types/restaurant";
 import CheckoutForm from "./CheckoutForm";
 import "./cart.css";
 import { useTranslation } from "react-i18next";
+import { localizedName } from "../../lib/localize";
 
 interface CartDrawerProps {
   restaurant: Restaurant;
@@ -11,9 +12,10 @@ interface CartDrawerProps {
 }
 
 function CartDrawer({ restaurant, onClose }: CartDrawerProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { lines, setQty, removeItem, total } = useCart();
   const [step, setStep] = useState<"cart" | "checkout">("cart");
+  const lang = i18n.language;
 
   return (
     <div className="cart-drawer-overlay" onClick={onClose}>
@@ -35,7 +37,7 @@ function CartDrawer({ restaurant, onClose }: CartDrawerProps) {
                   {lines.map((line) => (
                     <div key={line.item.id} className="cart-drawer-line">
                       <div className="cart-line-info">
-                        <strong>{line.item.name}</strong>
+                        <strong>{localizedName(line.item, lang)}</strong>
                         <span>
                           {line.item.price.toFixed(2)} {t("cart.currency")}
                         </span>

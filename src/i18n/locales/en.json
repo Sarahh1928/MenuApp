@@ -51,11 +51,11 @@
     "openNow": "Open now",
     "closed": "Closed",
     "closesAt": "Closes at",
-    "opensAt": "Opens at",
+    "opensAt": "Opens",
     "addressLabel": "Address",
     "call": "Call",
     "whatsapp": "WhatsApp",
-    "location": "Location",
+    "viewLocation": "View location",
     "pm": "PM",
     "am": "AM",
     "tomorrow": "tomorrow at",
@@ -131,8 +131,13 @@
     "profile": {
       "title": "Profile",
       "subtitle": "Your restaurant's public info and opening hours.",
-      "name": "Restaurant name",
-      "description": "Description",
+      "nameAr": "Name (Arabic)",
+      "nameEn": "Name (English)",
+      "descriptionAr": "Description (Arabic)",
+      "descriptionEn": "Description (English)",
+      "optional": "optional",
+      "locationUrl": "Google Maps link",
+      "locationUrlHint": "Paste your restaurant's Google Maps share link",
       "phone": "Phone",
       "whatsapp": "WhatsApp number",
       "address": "Address",
@@ -171,5 +176,9 @@
       "save": "Save",
       "cancel": "Cancel"
     }
+  },
+  "notFound": {
+    "title": "Menu link not found",
+    "message": "This link doesn't lead to a menu. Please use the link the restaurant gave you, or contact them directly for the correct one."
   }
 }

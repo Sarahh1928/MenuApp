@@ -1,47 +1,49 @@
 import { useTranslation } from "react-i18next";
 import { useCart } from "../../hooks/useCart";
+import { localizedName, localizedDescription } from "../../lib/localize";
 import type { MenuItem } from "../../types/menu";
+
 interface MenuItemCardProps {
   item: MenuItem;
 }
+
 function MenuItemCard({ item }: MenuItemCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { addItem } = useCart();
+  const lang = i18n.language;
+
+  const name = localizedName(item, lang);
+  const description = localizedDescription(item, lang);
+
   return (
     <div className="menu-item-card">
-      {" "}
       <div className="menu-item-image">
-        {" "}
-        <img src={item.image} alt={item.name} />{" "}
-      </div>{" "}
+        <img src={item.image} alt={name} />
+      </div>
+
       <div className="menu-item-content">
-        {" "}
         <div className="menu-item-header">
-          {" "}
-          <h3>{item.name}</h3>{" "}
-          <span className="menu-item-price">
-            {" "}
-            {item.price.toFixed(2)}{" "}
-          </span>{" "}
-        </div>{" "}
-        <p className="menu-item-description"> {item.description} </p>{" "}
+          <h3>{name}</h3>
+          <span className="menu-item-price">{item.price.toFixed(2)}</span>
+        </div>
+
+        <p className="menu-item-description">{description}</p>
+
         {!item.available && (
-          <span className="menu-item-unavailable">
-            {" "}
-            {t("menu.unavailable")}{" "}
-          </span>
-        )}{" "}
+          <span className="menu-item-unavailable">{t("menu.unavailable")}</span>
+        )}
+
         <button
           type="button"
           disabled={!item.available}
           className="add-to-cart-button"
           onClick={() => addItem(item)}
         >
-          {" "}
-          {t("menu.addToCart")}{" "}
-        </button>{" "}
-      </div>{" "}
+          {t("menu.addToCart")}
+        </button>
+      </div>
     </div>
   );
 }
+
 export default MenuItemCard;

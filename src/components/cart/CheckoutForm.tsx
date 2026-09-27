@@ -15,7 +15,7 @@ interface CheckoutFormProps {
 }
 
 function CheckoutForm({ restaurant, onBack, onComplete }: CheckoutFormProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { lines, total, clear } = useCart();
 
   const [name, setName] = useState("");
@@ -99,6 +99,7 @@ function CheckoutForm({ restaurant, onBack, onComplete }: CheckoutFormProps) {
           type="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
+          dir={i18n.language === "ar" ? "rtl" : "ltr"}
           required
         />
       </label>
